@@ -1,0 +1,95 @@
+#include <lpc214x.h>
+void delay(unsigned int );
+unsigned char num;
+int main()
+{
+	PINSEL0 =0x00000000;
+	IODIR0 =0xFFFFFFFF;
+	IODIR0 =IODIR0|(1<<7);
+	IODIR0 =IODIR0|(1<<8);
+	IODIR0 =IODIR0|(1<<9);
+	IODIR0 =IODIR0|(1<<10);
+	IODIR0 =IODIR0|(1<<11);
+	IODIR0 =IODIR0|(1<<12);
+	IODIR0 =IODIR0|(1<<13);
+	IODIR0 =IODIR0|(1<<14);
+	IODIR0 =IODIR0|(1<<15);
+	while(1)
+	{
+		for(num=0;num<10;num++)
+		{
+			switch(num)
+			{
+			case 0:
+				IOPIN0 =0x3F;
+			IOCLR0 =IOCLR0|(1<<7)|(1<<8)|(1<<9)|(1<<10)|(1<<11)|(1<<12)|(1<<13)|(1<<14)|(1<<15);
+			break;
+			case 1:
+				IOPIN0 =0x06;
+			IOSET0 =IOSET0|(1<<7);
+			delay(3000);
+			IOCLR0 =IOCLR0|(1<<7);
+			break;
+			case 2:
+				IOPIN0 =0x5B;
+			IOSET0 =IOSET0|(1<<7)|(1<<8);
+			delay(3000);
+			IOCLR0 =IOCLR0|(1<<7)|(1<<8);
+			break;
+			case 3:
+				IOPIN0 =0x4F;
+			IOSET0 =IOSET0|(1<<7)|(1<<8)|(1<<9);
+			delay(3000);
+			IOCLR0 =IOCLR0|(1<<7)|(1<<8)|(1<<9);
+			break;
+			case 4:
+				IOPIN0 =0x66;
+			IOSET0 =IOSET0|(1<<7)|(1<<8)|(1<<9)|(1<<10);
+			delay(3000);
+			IOCLR0 =IOCLR0|(1<<7)|(1<<8)|(1<<9)|(1<<10);
+			break;
+			case 5:
+				IOPIN0 =0x6D;
+			IOSET0 =IOSET0|(1<<7)|(1<<8)|(1<<9)|(1<<10)|(1<<11);
+			delay(3000);
+			IOCLR0 =IOCLR0|(1<<7)|(1<<8)|(1<<9)|(1<<10)|(1<<11);
+			break;
+			case 6:
+				IOPIN0 =0x7D;
+			IOSET0 =IOSET0|(1<<7)|(1<<8)|(1<<9)|(1<<10)|(1<<11)|(1<<12);
+			delay(3000);
+			IOCLR0 =IOCLR0|(1<<7)|(1<<8)|(1<<9)|(1<<10)|(1<<11)|(1<<12);
+			break;
+			case 7:
+				IOPIN0 =0x07;
+			IOSET0 =IOSET0|(1<<7)|(1<<8)|(1<<9)|(1<<10)|(1<<11)|(1<<12)|(1<<13);
+			delay(3000);
+			IOCLR0 =IOCLR0|(1<<7)|(1<<8)|(1<<9)|(1<<10)|(1<<11)|(1<<12)|(1<<13);
+			break;
+			case 8:
+				IOPIN0 =0x7F;
+			IOSET0 =IOSET0|(1<<7)|(1<<8)|(1<<9)|(1<<10)|(1<<11)|(1<<12)|(1<<13)|(1<<14);
+			delay(3000);
+			IOCLR0 =IOCLR0|(1<<7)|(1<<8)|(1<<9)|(1<<10)|(1<<11)|(1<<12)|(1<<13)|(1<<14);
+			break;
+			case 9:
+				IOPIN0 =0x6F;
+			IOSET0 =IOSET0|(1<<7)|(1<<8)|(1<<9)|(1<<10)|(1<<11)|(1<<12)|(1<<13)|(1<<14)|(1<<15);
+			delay(3000);
+			IOCLR0 =IOCLR0|(1<<7)|(1<<8)|(1<<9)|(1<<10)|(1<<11)|(1<<12)|(1<<13)|(1<<14)|(1<<15);
+			break;
+		}
+		delay(3000);
+	}
+}
+}
+void delay(unsigned int dly)
+{
+	int i,j;
+	for(i=0;i<dly;i++)
+	{
+		for(j=0;j<1000;j++);
+	{
+	}
+}
+}
