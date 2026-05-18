@@ -1,0 +1,118 @@
+#include <lpc214x.h>
+
+void lcdcmd(unsigned char cmd);
+void lcddat(unsigned char dat);
+void lcd_init(void);
+void lcd_enable(void);
+void delay(void);
+void lcd_send4bit(unsigned char data);
+
+int main()
+{
+    PINSEL0 = 0x00000000;
+    PINSEL1 = 0x00000000;
+    PINSEL2 = 0x00000000;
+
+    // P0.4 to P0.7 as output (LCD D4-D7)
+    IODIR0 |= 0x000000F0;
+
+    // RS, RW, EN as output
+    IODIR1 |= (1<<16) | (1<<17) | (1<<18);
+
+    lcd_init();
+
+    while(1)
+    {
+        lcdcmd(0x80);     // First line, first position
+
+        lcddat('G');
+        lcddat('a');
+        lcddat('y');
+        lcddat('u');
+
+        delay();
+    }
+}
+
+void lcd_init()
+{
+    delay();
+
+    lcdcmd(0x02);   // Initialize 4-bit mode
+    lcdcmd(0x28);   // 2 line, 5x7 matrix
+    lcdcmd(0x0C);   // Display ON, cursor OFF
+    lcdcmd(0x06);   // Auto increment cursor
+    lcdcmd(0x01);   // Clear display
+}
+
+void lcdcmd(unsigned char cmd)
+{
+    // Higher nibble
+    lcd_send4bit(cmd & 0xF0);
+
+    // RS = 0 for command
+    IOCLR1 = (1<<16);
+
+    // RW = 0 for write
+    IOCLR1 = (1<<17);
+
+    lcd_enable();
+
+    // Lower nibble
+    lcd_send4bit((cmd << 4) & 0xF0);
+
+    IOCLR1 = (1<<16);
+    IOCLR1 = (1<<17);
+
+    lcd_enable();
+}
+
+void lcddat(unsigned char dat)
+{
+    // Higher nibble
+    lcd_send4bit(dat & 0xF0);
+
+    // RS = 1 for data
+    IOSET1 = (1<<16);
+
+    // RW = 0
+    IOCLR1 = (1<<17);
+
+    lcd_enable();
+
+    // Lower nibble
+    lcd_send4bit((dat << 4) & 0xF0);
+
+    IOSET1 = (1<<16);
+    IOCLR1 = (1<<17);
+
+    lcd_enable();
+}
+
+void lcd_send4bit(unsigned char data)
+{
+    // Clear P0.4 to P0.7
+    IOCLR0 = 0x000000F0;
+
+    // Send data to P0.4-P0.7
+    IOSET0 = data;
+}
+
+void lcd_enable()
+{
+    IOSET1 = (1<<18);   // EN = 1
+    delay();
+
+    IOCLR1 = (1<<18);   // EN = 0
+    delay();
+}
+
+void delay()
+{
+    unsigned int i, j;
+
+    for(i=0; i<1000; i++)
+    {
+        for(j=0; j<100; j++);
+    }
+}
